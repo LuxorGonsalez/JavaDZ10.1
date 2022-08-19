@@ -1,80 +1,100 @@
 package ru.netology;
 
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class RadioTest {
+    Radio radio = new Radio();
 
-    @Test
-    void increaseVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(6);
-        radio.increaseVolume();
-        assertEquals(7, radio.getCurrentVolume());
+
+    @ParameterizedTest
+    @CsvFileSource(files = "src/test/resources/rado.csv")
+
+    public void shouldSetCurrentRadioStation(int currentChannel, int expected) {
+        radio.setCurrentChannel(currentChannel);
+        int actual = radio.getCurrentChannel();
+
+        Assertions.assertEquals(expected, actual);
+
     }
 
-    @Test
-    void decreaseVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(6);
-        radio.decreaseVolume();
-        assertEquals(5, radio.getCurrentVolume());
+    @ParameterizedTest
+    @CsvSource({
+            "5,6",
+            "0,1",
+            "9,0"
+    })
+    public void shouldNextRadioStation(int currentChanel, int expected) {
+        radio.setCurrentChannel(currentChanel);
+        radio.nextRadio();
+        int actual = radio.getCurrentChannel();
+
+        Assertions.assertEquals(expected, actual);
+
     }
 
-    @Test
-    void nextChannel() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(5);
-        radio.increaseChannel();
-        assertEquals(6, radio.getCurrentChannel());
+    @ParameterizedTest
+    @CsvSource({
+            "4,3",
+            "9,8",
+            "0,9"
+    })
+    public void shouldPrevRadioStation(int currentChanel, int expected) {
+        radio.setCurrentChannel(currentChanel);
+        radio.prevRadio();
+        int actual = radio.getCurrentChannel();
+
+        Assertions.assertEquals(expected, actual);
     }
 
-    @Test
-    void previousChannel() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(5);
-        radio.decreaseChannel();
-        assertEquals(4, radio.getCurrentChannel());
+
+    @ParameterizedTest
+    @CsvFileSource(files = "src/test/resources/volume.csv")
+
+    public void shouldSetCurrentVolume(int currentVolume, int expected) {
+        radio.setCurrentVolume(currentVolume);
+        int actual = radio.getCurrentVolume();
+
+        Assertions.assertEquals(expected, actual);
+
     }
 
-    @Test
-    public void increaseVolumeFromMaxVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(10);
-        radio.increaseVolume();
-        assertEquals(10, radio.getCurrentVolume());
+
+    @ParameterizedTest
+    @CsvSource({
+            "5,6",
+            "0,1",
+            "10,10"
+    })
+
+    public void shouldPlusVolume(int currentVolume, int expected) {
+        radio.setCurrentVolume(currentVolume);
+        radio.nextVolume();
+        int actual = radio.getCurrentVolume();
+
+        Assertions.assertEquals(expected, actual);
     }
 
-    @Test
-    public void decreaseVolumeFromMinVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(0);
-        radio.decreaseVolume();
-        assertEquals(0, radio.getCurrentVolume());
+    @ParameterizedTest
+    @CsvSource({
+            "6,5",
+            "1,0",
+            "0,0",
+            "10,9"
+
+    })
+
+    public void shouldMinusVolume(int currentVolume, int expected) {
+        radio.setCurrentVolume(currentVolume);
+        radio.prevVolume();
+        int actual = radio.getCurrentVolume();
+
+        Assertions.assertEquals(expected, actual);
     }
 
-    @Test
-    public void setRequiredChannel() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(4);
-        assertEquals(4, radio.getCurrentChannel());
-    }
-
-    @Test
-    public void previousChannelFromMin() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(0);
-        radio.decreaseChannel();
-        assertEquals(9, radio.getCurrentChannel());
-    }
-
-    @Test
-    public void nextChannelFromMax() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(9);
-        radio.increaseChannel();
-        assertEquals(0, radio.getCurrentChannel());
-    }
 
 }
+

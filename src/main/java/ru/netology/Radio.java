@@ -2,74 +2,70 @@ package ru.netology;
 
 
 public class Radio {
-    private int maxVolume = 10;
-    private int minVolume = 0;
-    private int maxChannel = 9;
-    private int minChannel = 0;
-    private int currentVolume;
     private int currentChannel;
+    private int currentVolume;
 
-    public void increaseVolume() {
-        if (currentVolume == maxVolume) {
-            return;
-        }
-        currentVolume++;
+    public int getCurrentChannel() {
+        return currentChannel;
+
     }
-
-    public void decreaseVolume() {
-        if (currentVolume == minVolume) {
-            return;
-        }
-        currentVolume--;
-    }
-
-    public void increaseChannel() {
-        if (currentChannel == maxChannel) {
-            this.currentChannel = minChannel;
-            return;
-        }
-        currentChannel++;
-    }
-
-    public void decreaseChannel() {
-        if (currentChannel == minChannel) {
-            this.currentChannel = maxChannel;
-            return;
-        }
-        currentChannel--;
-    }
-
 
     public int getCurrentVolume() {
         return currentVolume;
     }
 
-    public void setCurrentVolume(int currentVolume) {
-        if (currentVolume > maxVolume) {
-            this.currentVolume = maxVolume;
+    public void setCurrentChannel(int currentChannel) {
+
+        if (currentChannel < 0) {
             return;
         }
-        if (currentVolume < minVolume) {
-            this.currentVolume = minVolume;
+        if (currentChannel > 9) {
+            return;
+        }
+        this.currentChannel = currentChannel;
+    }
+
+
+    public void setCurrentVolume(int currentVolume) {
+        if (currentVolume > 10) {
+            return;
+        }
+        if (currentVolume < 0) {
             return;
         }
         this.currentVolume = currentVolume;
     }
 
 
-    public void setCurrentChannel(int currentChannel) {
-        if (currentChannel > maxChannel) {
-
+    public void nextVolume() {
+        if (currentVolume >= 10) {
             return;
         }
-        if (currentChannel < minChannel) {
+        currentVolume++;
 
+    }
+
+    public void prevVolume() {
+        if (currentVolume <= 0) {
             return;
         }
-        this.currentChannel = currentChannel;
+        currentVolume--;
     }
 
-    public int getCurrentChannel() {
-        return currentChannel;
+    public void nextRadio() {
+        if (currentChannel >= 9) {
+            currentChannel = 0;
+        } else {
+            currentChannel++;
+        }
     }
+
+    public void prevRadio() {
+        if (currentChannel <= 0) {
+            currentChannel = 9;
+        } else {
+            currentChannel--;
+        }
+    }
+
 }
